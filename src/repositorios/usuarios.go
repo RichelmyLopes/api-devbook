@@ -16,14 +16,14 @@ func NovoRepositorioDeUsuarios(db *sql.DB) *usuarios {
 
 // Insere um usuario no banco
 func (u usuarios) Criar(usuario modelos.Usuario) (uint64, error) {
-	statement, erro := u.db.Prepare("insert into usuarios(nome, nick,email, senha) values(?, ?, ?, ?)")
+	statement, erro := u.db.Prepare("insert into usuarios(nome, nick, email, senha) values(?, ?, ?, ?)")
 	if erro != nil {
 		return 0, erro
 	}
 
 	defer statement.Close()
 
-	resultado, erro := u.db.Exec(usuario.Nome, usuario.Nick, usuario.Email, usuario.Senha)
+	resultado, erro := statement.Exec(usuario.Nome, usuario.Nick, usuario.Email, usuario.Senha)
 	if erro != nil {
 		return 0, erro
 	}
