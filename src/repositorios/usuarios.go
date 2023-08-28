@@ -92,3 +92,18 @@ func (u usuarios) BuscarPorID(usuarioID uint64) (modelos.Usuario, error) {
 
 	return usuario, nil
 }
+
+func (u usuarios) Atualizar(usuarioID uint64, usuario modelos.Usuario) error {
+	statement, erro := u.db.Prepare("update usuarios set nome = ?, nick = ?, email = ? where id = ?")
+	if erro != nil {
+		return erro
+	}
+
+	defer statement.Close()
+
+	if _, erro = statement.Exec(usuario.Nome, usuario.Nick, usuario.Email, usuarioID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
