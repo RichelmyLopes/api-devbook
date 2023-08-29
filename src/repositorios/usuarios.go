@@ -69,6 +69,7 @@ func (u usuarios) Buscar(nomeOuNick string) ([]modelos.Usuario, error) {
 	return usuarios, nil
 }
 
+// BuscarPorID busca um usuario pelo id dele
 func (u usuarios) BuscarPorID(usuarioID uint64) (modelos.Usuario, error) {
 
 	linha, erro := u.db.Query("select id, nome, nick,email, criadoEm from usuarios where id = ?", usuarioID)
@@ -93,6 +94,7 @@ func (u usuarios) BuscarPorID(usuarioID uint64) (modelos.Usuario, error) {
 	return usuario, nil
 }
 
+// Atualizar faz o update do usuario pelo id
 func (u usuarios) Atualizar(usuarioID uint64, usuario modelos.Usuario) error {
 	statement, erro := u.db.Prepare("update usuarios set nome = ?, nick = ?, email = ? where id = ?")
 	if erro != nil {
@@ -105,5 +107,19 @@ func (u usuarios) Atualizar(usuarioID uint64, usuario modelos.Usuario) error {
 		return erro
 	}
 
+	return nil
+}
+
+// Delete deleta um usuario pelo id recebido
+func (u usuarios) Delete(usuarioID uint64) error {
+	statement, erro := u.db.Prepare("delete from usuarios where id = ?")
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro = statement.Exec(usuarioID); erro != nil {
+		return erro
+	}
 	return nil
 }
