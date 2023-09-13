@@ -1,7 +1,7 @@
 package modelos
 
 import (
-	"api/src/serguranca"
+	"api/src/seguranca"
 	"errors"
 	"strings"
 	"time"
@@ -60,7 +60,7 @@ func (usuario *Usuario) formatar(etapa string) error {
 	usuario.Email = strings.TrimSpace(usuario.Email)
 
 	if etapa == "cadastro" {
-		senhaHash, erro := serguranca.Hash(usuario.Senha)
+		senhaHash, erro := seguranca.Hash(usuario.Senha)
 		if erro != nil {
 			return erro
 		}
