@@ -10,9 +10,8 @@ import (
 
 func main() {
 	config.Carregar()
-	fmt.Println(config.Porta)
-	fmt.Println(config.StringConexaoBanco)
-	fmt.Printf("Escuranto na porta %d", config.Porta)
 	r := router.Gerar()
+
+	fmt.Printf("Escutando na porta %d\n", config.Porta)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Porta), r))
 }

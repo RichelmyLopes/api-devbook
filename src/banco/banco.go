@@ -4,10 +4,10 @@ import (
 	"api/src/config"
 	"database/sql"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // Driver
 )
 
-// Abre conexao com BD
+// Conectar abre a conexão com o banco de dados e a retorna
 func Conectar() (*sql.DB, error) {
 	db, erro := sql.Open("mysql", config.StringConexaoBanco)
 	if erro != nil {
@@ -20,4 +20,5 @@ func Conectar() (*sql.DB, error) {
 	}
 
 	return db, nil
+
 }
