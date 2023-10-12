@@ -8,12 +8,12 @@ import (
 	"api/src/respostas"
 	"api/src/seguranca"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
-// Responsavel por autenticar usuario na api
+// Login é responsável por autenticar um usuário na API
 func Login(w http.ResponseWriter, r *http.Request) {
 	corpoRequisicao, erro := ioutil.ReadAll(r.Body)
 	if erro != nil {
@@ -22,7 +22,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var usuario modelos.Usuario
-
 	if erro = json.Unmarshal(corpoRequisicao, &usuario); erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
@@ -52,8 +51,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}
-	fmt.Println(token)
-	w.Write([]byte(token))
 
-	// w.Write([]byte("Voce esta logado"))
+	usuarioID := strconv.FormatUint(usuarioSalvoNoBanco.ID, 10)
+
+	respostas.JSON(w, http.StatusOK, modelos.DadosAutenticacao{ID: usuarioID, Token: token})
 }
